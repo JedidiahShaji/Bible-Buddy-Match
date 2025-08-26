@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bible Buddy Match</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <!-- Corner MPC logo -->
+  <img src="MPC-logo.png" alt="MPC Logo" class="corner-logo" />
+
+  <div class="container">
+    <h1>Discover Your Bible Hero!</h1>
+    <p>Answer a few questions, smile for the camera, and say something fun to find out which Bible character you're most like!</p>
+
+    <button id="startBtn">Start Adventure!</button>
+
+    <!-- Quiz Section -->
+    <div id="quizSection" style="display: none;">
+      <h2>Quick Quiz Time!</h2>
+      <form id="quizForm">
+        <div class="question">
+          <p>1. What do you like doing most?</p>
+          <label><input type="radio" name="q1" value="kind"> Helping friends</label>
+          <label><input type="radio" name="q1" value="adventurous"> Exploring new places</label>
+          <label><input type="radio" name="q1" value="brave"> Standing up for what's right</label>
+          <label><input type="radio" name="q1" value="dreamer"> Dreaming big</label>
+        </div>
+
+        <div class="question">
+          <p>2. How do you feel when something's tough?</p>
+          <label><input type="radio" name="q2" value="faithful"> I pray or think positive</label>
+          <label><input type="radio" name="q2" value="resilient"> I keep trying</label>
+          <label><input type="radio" name="q2" value="humble"> I ask for help</label>
+          <label><input type="radio" name="q2" value="wise"> I make a plan</label>
+        </div>
+
+        <div class="question">
+          <p>3. Pick a favorite activity:</p>
+          <label><input type="radio" name="q3" value="joyful"> Singing or music</label>
+          <label><input type="radio" name="q3" value="creative"> Building things</label>
+          <label><input type="radio" name="q3" value="teacher"> Teaching others</label>
+          <label><input type="radio" name="q3" value="protective"> Protecting animals/friends</label>
+        </div>
+
+        <button type="button" id="submitQuiz">See My Bible Buddy!</button>
+      </form>
+    </div>
+
+    <!-- Result Section -->
+    <div id="resultSection" style="display: none;">
+      <h2>Your Bible Buddy!</h2>
+      <div id="resultText"></div>
+      <button id="tryAgain">Try Again</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* Background */
+body {
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+  background: url("background-image.png") center center / cover no-repeat fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Church logo (bottom-right corner) */
+.corner-logo {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 80px;        /* adjust as needed */
+  height: auto;
+  opacity: 0.95;
+  z-index: 10;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.4));
+}
+
+
+/* Main panel */
+.container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  max-width: 720px;
+  margin: 24px;
+  backdrop-filter: blur(2px);
+}
+
+h1 {
+  color: #2e8b57; /* deeper green */
+  margin: 0 0 8px 0;
+}
+
+/* Buttons always centered */
+button {
+  background-color: #2e8b57;
+  color: white;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 16px auto 0;
+  display: inline-block;
+}
+button:hover { background-color: #267349; }
+
+/* Quiz */
+.question { margin: 20px 0; text-align: left; }
+label { display: block; margin: 8px 0; cursor: pointer; }
+
+/* Ensure the quiz submit button stays centered */
+#submitQuiz {
+  display: block;
+  margin: 20px auto 0;
+}
+
+/* Result card */
+#resultText { margin-top: 18px; }
+.card {
+  background: #fffefa;
+  border: 2px solid #ffe58a;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  display: inline-block;
+}
+.card img {
+  max-width: 170px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.card h3 { margin: 0 0 6px 0; }
+.card p { margin: 6px 0; }
