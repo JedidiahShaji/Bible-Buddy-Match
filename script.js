@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ---------- Element refs ----------
   const startBtn = document.getElementById("startBtn");
   const quizSection = document.getElementById("quizSection");
   const resultSection = document.getElementById("resultSection");
@@ -6,6 +7,64 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitQuiz = document.getElementById("submitQuiz");
   const resultText = document.getElementById("resultText");
   const tryAgain = document.getElementById("tryAgain");
+  const confettiSound = document.getElementById("confettiSound");
+  const muteCheckbox = document.getElementById("muteSfx");
+
+  // ---------- Celebration/Sound (single source of truth) ----------
+  const prefersReducedMotion = () =>
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Persist mute setting
+  if (muteCheckbox) {
+    const saved = localStorage.getItem('sfx-muted') === '1';
+    muteCheckbox.checked = saved;
+    if (confettiSound) confettiSound.muted = saved;
+    muteCheckbox.addEventListener('change', () => {
+      const m = !!muteCheckbox.checked;
+      localStorage.setItem('sfx-muted', m ? '1' : '0');
+      if (confettiSound) confettiSound.muted = m;
+    });
+  }
+
+  // Unlock audio once on first interaction (mobile autoplay policies)
+  let sfxUnlocked = false;
+  function unlockAudioOnce() {
+    if (sfxUnlocked || !confettiSound) return;
+    confettiSound.volume = 1.0;
+    const p = confettiSound.play();
+    if (p && typeof p.then === 'function') {
+      p.then(() => {
+        confettiSound.pause();
+        confettiSound.currentTime = 0;
+        sfxUnlocked = true;
+        window.removeEventListener('pointerdown', unlockAudioOnce);
+        window.removeEventListener('keydown', unlockAudioOnce);
+      }).catch(() => {});
+    } else {
+      confettiSound.pause();
+      confettiSound.currentTime = 0;
+      sfxUnlocked = true;
+      window.removeEventListener('pointerdown', unlockAudioOnce);
+      window.removeEventListener('keydown', unlockAudioOnce);
+    }
+  }
+  window.addEventListener('pointerdown', unlockAudioOnce, { passive: true });
+  window.addEventListener('keydown', unlockAudioOnce);
+
+  // Debounced celebration (confetti + sound)
+  let lastCelebrationAt = 0;
+  function celebrateOnce() {
+    const now = Date.now();
+    if (now - lastCelebrationAt < 3000) return; // debounce 3s
+    lastCelebrationAt = now;
+
+    if (!prefersReducedMotion() && window.fireConfetti) {
+      window.fireConfetti({ durationMs: 1200, particleCount: 150 });
+    }
+    if (confettiSound && !prefersReducedMotion() && !(muteCheckbox && muteCheckbox.checked)) {
+      try { confettiSound.currentTime = 0; confettiSound.play(); } catch {}
+    }
+  }
 
   // ---------- Character Dataset ----------
   const characters = [
@@ -98,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Find best match by overlapping traits
-    let bestMatch = characters[0];
+    let bestMatch = null;
     let maxScore = -1;
 
     characters.forEach(c => {
@@ -112,6 +171,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Render result (with local image + fallback)
     quizSection.style.display = "none";
     resultSection.style.display = "block";
+
+    // Celebrate!
+    celebrateOnce();
 
     const imgSrc = imagePathFor(bestMatch.name);
     resultText.innerHTML = `
